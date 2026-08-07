@@ -6,7 +6,7 @@
 
 **Catch My CV** is an interactive web portfolio styled as a calm night-time fishing trip. Cast a line, catch some funny loot, and pull out a fully unrollable parchment CV!
 
-![Zrzut ekranu aplikacji](./images/screenshot.png)
+![Zrzut ekranu aplikacji](./assets/screenshot.png)
 
 ## 🛠️ Tech Stack
 - **Frontend:** Vanilla HTML5, CSS3, JavaScript ES6+

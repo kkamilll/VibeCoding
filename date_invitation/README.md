@@ -4,7 +4,7 @@
 
 I Have a Question For You is a simple, cute Single Page Application (SPA) designed to ask someone out on a date in a charming way. The app guides the user through a few screens, playfully dodges the "NO" button, and allows them to generate a date plan that can be easily shared via WhatsApp or SMS.
 
-![App Screenshot](image.png)
+![App Screenshot](assets/image.png)
 
 ## 🛠️ Tech Stack
 - **Frontend:** Vanilla HTML5, CSS3, JavaScript ES6+
