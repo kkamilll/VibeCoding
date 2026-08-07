@@ -1,0 +1,560 @@
+/* ==========================================================================
+   DESIGN SYSTEM & VARIABLES
+   ========================================================================== */
+:root {
+    --primary-color: #ff4d6d;
+    --primary-hover: #ff758f;
+    --secondary-color: #c9184a;
+    --background-start: #ffe5ec;
+    --background-end: #f8edeb;
+    --card-bg: rgba(255, 255, 255, 0.55);
+    --card-border: rgba(255, 255, 255, 0.4);
+    --text-color: #594a4e;
+    --text-muted: #807274;
+    --success-color: #38b000;
+    --danger-color: #d90429;
+    --whatsapp-color: #25d366;
+    --sms-color: #0077b6;
+    --gold: #ffb703;
+    
+    --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+    --shadow-lg: 0 20px 25px -5px rgba(255, 77, 109, 0.15), 0 10px 10px -5px rgba(255, 77, 109, 0.04);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Quicksand', sans-serif;
+    color: var(--text-color);
+    background: linear-gradient(135deg, var(--background-start) 0%, var(--background-end) 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* ==========================================================================
+   FLOATING HEARTS BACKGROUND
+   ========================================================================== */
+.hearts-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.floating-heart {
+    position: absolute;
+    bottom: -50px;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    opacity: 0.6;
+    animation: floatUp 8s ease-in infinite;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) rotate(0deg) scale(0.6);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.7;
+    }
+    90% {
+        opacity: 0.7;
+    }
+    100% {
+        transform: translateY(-105vh) rotate(360deg) scale(1.2);
+        opacity: 0;
+    }
+}
+
+/* ==========================================================================
+   CONTAINER & GLASS CARD
+   ========================================================================== */
+.app-container {
+    width: 100%;
+    max-width: 480px;
+    padding: 20px;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.card {
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--card-border);
+    border-radius: 24px;
+    padding: 35px 25px;
+    width: 100%;
+    box-shadow: var(--shadow-lg);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* ==========================================================================
+   TYPOGRAPHY
+   ========================================================================== */
+.romantic-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.8rem;
+    color: var(--secondary-color);
+    margin-bottom: 12px;
+    line-height: 1.2;
+    text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.8);
+}
+
+.subtitle {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+    font-weight: 500;
+}
+
+/* ==========================================================================
+   SCREENS TRANSITIONS
+   ========================================================================== */
+.screen {
+    display: none;
+    width: 100%;
+    animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.screen.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ==========================================================================
+   BUTTONS
+   ========================================================================== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 28px;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: var(--shadow-sm);
+    text-decoration: none;
+    gap: 8px;
+}
+
+.btn:active {
+    transform: scale(0.95);
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(255, 77, 109, 0.3);
+}
+
+.btn-glow {
+    position: relative;
+    z-index: 1;
+}
+
+.btn-glow::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, var(--primary-hover), var(--secondary-color));
+    border-radius: 50px;
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 0.3s ease;
+}
+
+.btn-glow:hover::after {
+    opacity: 1;
+}
+
+.btn-success {
+    background: var(--success-color);
+    color: white;
+}
+
+.btn-success:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 10px 20px rgba(56, 176, 0, 0.3);
+}
+
+.btn-danger {
+    background: var(--danger-color);
+    color: white;
+    position: relative;
+}
+
+.btn-danger:hover {
+    box-shadow: 0 10px 20px rgba(217, 4, 41, 0.3);
+}
+
+.btn-whatsapp {
+    background: var(--whatsapp-color);
+    color: white;
+}
+
+.btn-whatsapp:hover {
+    background: #20ba5a;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(37, 211, 102, 0.3);
+}
+
+.btn-sms {
+    background: var(--sms-color);
+    color: white;
+}
+
+.btn-sms:hover {
+    background: #00669c;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 119, 182, 0.3);
+}
+
+.btn-link {
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    box-shadow: none;
+    padding: 8px 16px;
+    margin-top: 15px;
+}
+
+.btn-link:hover {
+    color: var(--secondary-color);
+    text-decoration: underline;
+}
+
+.btn-lg {
+    padding: 18px 36px;
+    font-size: 1.15rem;
+    min-width: 120px;
+}
+
+.btn-block {
+    display: flex;
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+/* ==========================================================================
+   SPECIFIC COMPONENT STYLE
+   ========================================================================== */
+.card-icon {
+    font-size: 3.5rem;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.pulse-animation {
+    animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+}
+
+.illustration-container {
+    width: 100%;
+    margin: 20px 0 30px;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 3px solid rgba(255, 255, 255, 0.6);
+    box-shadow: var(--shadow-md);
+}
+
+.love-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.illustration-container:hover .love-img {
+    transform: scale(1.05);
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+    min-height: 80px;
+    position: relative;
+}
+
+/* ==========================================================================
+   DATE PLANNING FORM
+   ========================================================================== */
+.celebration-header {
+    margin-bottom: 25px;
+}
+
+.emoji-bounce {
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-15px); }
+    60% { transform: translateY(-7px); }
+}
+
+.form-section {
+    text-align: left;
+    margin-bottom: 28px;
+    animation: fadeIn 0.4s ease forwards;
+}
+
+.form-section h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    color: var(--text-color);
+}
+
+.step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    font-size: 0.85rem;
+    margin-right: 8px;
+}
+
+/* Options Grid (Activities & Days) */
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.option-card {
+    cursor: pointer;
+    position: relative;
+}
+
+.option-card input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.option-card-content {
+    background: rgba(255, 255, 255, 0.45);
+    border: 2px solid transparent;
+    border-radius: 16px;
+    padding: 16px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 8px;
+    height: 100%;
+    transition: all 0.25s ease;
+    box-shadow: var(--shadow-sm);
+}
+
+.option-card-content i {
+    font-size: 1.6rem;
+    color: var(--primary-color);
+    transition: transform 0.3s ease;
+}
+
+.option-card-content span {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* Checked Card Styling */
+.option-card input[type="radio"]:checked + .option-card-content {
+    background: white;
+    border-color: var(--primary-color);
+    box-shadow: 0 8px 16px rgba(255, 77, 109, 0.15);
+    transform: translateY(-2px);
+}
+
+.option-card input[type="radio"]:checked + .option-card-content i {
+    transform: scale(1.15);
+}
+
+/* Days Specific */
+.days-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.days-grid .option-card-content {
+    padding: 12px 6px;
+}
+
+.days-grid .option-card-content span {
+    font-size: 0.85rem;
+}
+
+/* Form Inputs (Custom Inputs) */
+.custom-date-container, .custom-time-container {
+    margin-top: 12px;
+    display: none;
+    animation: slideDown 0.3s ease forwards;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px 18px;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 77, 109, 0.25);
+    background: rgba(255, 255, 255, 0.8);
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-color);
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.form-input:focus {
+    border-color: var(--primary-color);
+}
+
+/* Time presets */
+.time-picker-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.time-presets {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.time-preset-btn {
+    background: rgba(255, 255, 255, 0.45);
+    border: 2px solid transparent;
+    border-radius: 12px;
+    padding: 10px 0;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+}
+
+.time-preset-btn.active {
+    background: white;
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+/* ==========================================================================
+   FINAL SCREEN
+   ========================================================================== */
+.summary-box {
+    background: rgba(255, 255, 255, 0.7);
+    border-left: 4px solid var(--primary-color);
+    border-radius: 12px;
+    padding: 16px;
+    margin: 20px 0 25px;
+    text-align: left;
+    box-shadow: var(--shadow-sm);
+}
+
+.summary-box p {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    font-weight: 600;
+}
+
+.animate-bounce {
+    animation: bounce 1.8s infinite;
+}
+
+/* ==========================================================================
+   RESPONSIVENESS ADJUSTMENTS
+   ========================================================================== */
+@media (max-width: 400px) {
+    .romantic-title {
+        font-size: 2.3rem;
+    }
+    
+    .card {
+        padding: 25px 15px;
+    }
+    
+    .days-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .time-presets {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

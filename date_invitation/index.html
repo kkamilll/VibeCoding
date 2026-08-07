@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">I have a question for you... ✨</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Top Right Header Control Panel for Language -->
+    <div class="lang-toggle-container">
+        <button id="lang-toggle" class="btn btn-sm" style="position: absolute; top: 15px; right: 15px; z-index: 1000; background: rgba(255, 255, 255, 0.7); border: 1px solid #ffb3c6; border-radius: 20px; padding: 5px 15px; font-family: 'Quicksand', sans-serif; font-weight: 600; color: #ff4d6d; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(255, 77, 109, 0.15); backdrop-filter: blur(5px);">
+            <i class="fa-solid fa-globe"></i> <span id="lang-code">EN</span>
+        </button>
+    </div>
+
+    <!-- Floating Hearts Background Container -->
+    <div class="hearts-container" id="hearts-container"></div>
+    
+    <main class="app-container">
+        
+        <!-- SECTION 1: INTRO -->
+        <section id="intro-screen" class="screen active">
+            <div class="card glass">
+                <div class="card-icon pulse-animation">
+                    <i class="fa-solid fa-heart" style="color: #ff4d6d; font-size: 3rem;"></i>
+                </div>
+                <h1 class="romantic-title" data-en="Hey... ✨" data-pl="Hejka... ✨">Hey... ✨</h1>
+                <p class="subtitle" data-en="I have one cute and very important question for you. Will you take a look inside? 😉" data-pl="Mam do Ciebie jedno urocze i bardzo ważne pytanie. Zajrzysz do środka? 😉">I have one cute and very important question for you. Will you take a look inside? 😉</p>
+                
+                <div class="illustration-container">
+                    <img src="assets/love_illustration.png" alt="Cute date illustration" class="love-img">
+                </div>
+                
+                <button id="start-btn" class="btn btn-primary btn-glow">
+                    <span data-en="Open the message 💖" data-pl="Otwórz wiadomość 💖">Open the message 💖</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- SECTION 2: THE INVITATION -->
+        <section id="invite-screen" class="screen">
+            <div class="card glass">
+                <h2 class="romantic-title" data-en="Will you go on a date with me? 🌹" data-pl="Czy wyjdziesz ze mną na randkę? 🌹">Will you go on a date with me? 🌹</h2>
+                <p class="subtitle" data-en="I promise delicious food, cute conversations, great atmosphere and of course my wonderful company! 😊" data-pl="Obiecuję pyszne jedzenie, urocze rozmowy, super atmosferę i oczywiście moje wspaniałe towarzystwo! 😊">I promise delicious food, cute conversations, great atmosphere and of course my wonderful company! 😊</p>
+                
+                <div class="button-group">
+                    <button id="yes-btn" class="btn btn-success btn-lg" data-en="YES! 😍" data-pl="TAK! 😍">
+                        YES! 😍
+                    </button>
+                    <button id="no-btn" class="btn btn-danger btn-lg" data-en="NO 😢" data-pl="NIE 😢">
+                        NO 😢
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: PLANNING THE DATE -->
+        <section id="plan-screen" class="screen">
+            <div class="card glass">
+                <div class="celebration-header">
+                    <span class="emoji-bounce" style="font-size: 2.5rem; display: inline-block;">🎉</span>
+                    <h2 class="romantic-title" data-en="Wonderful! I'm so happy! 🥰" data-pl="Cudownie! Bardzo się cieszę! 🥰">Wonderful! I'm so happy! 🥰</h2>
+                    <p class="subtitle" data-en="Now let's plan our perfect meeting together. Choose what you feel like doing the most:" data-pl="Teraz wspólnie zaplanujmy nasze idealne spotkanie. Wybierz to, na co masz największą ochotę:">Now let's plan our perfect meeting together. Choose what you feel like doing the most:</p>
+                </div>
+                
+                <form id="date-planner-form" onsubmit="event.preventDefault();">
+                    <!-- Step 1: Where -->
+                    <div class="form-section">
+                        <h3><span class="step-num">1</span><span data-en="Where are we going? 📍" data-pl="Gdzie idziemy? 📍">Where are we going? 📍</span></h3>
+                        <div class="options-grid">
+                            <label class="option-card">
+                                <input type="radio" name="activity" value="coffee" checked>
+                                <div class="option-card-content">
+                                    <i class="fa-solid fa-mug-hot"></i>
+                                    <span data-en="Coffee and sweets ☕" data-pl="Kawa i coś słodkiego ☕">Coffee and sweets ☕</span>
+                                </div>
+                            </label>
+                            
+                            <label class="option-card">
+                                <input type="radio" name="activity" value="dinner">
+                                <div class="option-card-content">
+                                    <i class="fa-solid fa-utensils"></i>
+                                    <span data-en="Delicious dinner 🍕" data-pl="Pyszna kolacja 🍕">Delicious dinner 🍕</span>
+                                </div>
+                            </label>
+                            
+                            <label class="option-card">
+                                <input type="radio" name="activity" value="walk">
+                                <div class="option-card-content">
+                                    <i class="fa-solid fa-ice-cream"></i>
+                                    <span data-en="Walk and ice cream 🍦" data-pl="Spacer i lody 🍦">Walk and ice cream 🍦</span>
+                                </div>
+                            </label>
+                            
+                            <label class="option-card">
+                                <input type="radio" name="activity" value="surprise">
+                                <div class="option-card-content">
+                                    <i class="fa-solid fa-gift"></i>
+                                    <span data-en="Surprise! 🎁" data-pl="Niespodzianka! 🎁">Surprise! 🎁</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 2: When -->
+                    <div class="form-section">
+                        <h3><span class="step-num">2</span><span data-en="Choose the date 📅" data-pl="Wybierz termin 📅">Choose the date 📅</span></h3>
+                        <div class="options-grid days-grid">
+                            <label class="option-card day-card">
+                                <input type="radio" name="day" value="friday" checked>
+                                <div class="option-card-content">
+                                    <span data-en="Friday" data-pl="Piątek">Friday</span>
+                                </div>
+                            </label>
+                            
+                            <label class="option-card day-card">
+                                <input type="radio" name="day" value="saturday">
+                                <div class="option-card-content">
+                                    <span data-en="Saturday" data-pl="Sobota">Saturday</span>
+                                </div>
+                            </label>
+                            
+                            <label class="option-card day-card">
+                                <input type="radio" name="day" value="sunday">
+                                <div class="option-card-content">
+                                    <span data-en="Sunday" data-pl="Niedziela">Sunday</span>
+                                </div>
+                            </label>
+                            
+                            <label class="option-card day-card" id="custom-day-label">
+                                <input type="radio" name="day" value="custom" id="custom-day-radio">
+                                <div class="option-card-content">
+                                    <span data-en="Other day" data-pl="Inny dzień">Other day</span>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <!-- Custom Date Input (hidden by default) -->
+                        <div class="custom-date-container" id="custom-date-container">
+                            <input type="date" id="custom-date-input" class="form-input">
+                        </div>
+                    </div>
+                    
+                    <!-- Step 3: Time -->
+                    <div class="form-section">
+                        <h3><span class="step-num">3</span><span data-en="At what time? ⏰" data-pl="O której godzinie? ⏰">At what time? ⏰</span></h3>
+                        <div class="time-picker-container">
+                            <div class="time-presets">
+                                <button type="button" class="time-preset-btn active" data-time="16:00">16:00</button>
+                                <button type="button" class="time-preset-btn" data-time="18:00">18:00</button>
+                                <button type="button" class="time-preset-btn" data-time="20:00">20:00</button>
+                                <button type="button" class="time-preset-btn" data-time="custom" data-en="Other" data-pl="Inna">Other</button>
+                            </div>
+                            <div class="custom-time-container" id="custom-time-container">
+                                <input type="time" id="custom-time-input" class="form-input" value="18:00">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button id="submit-plan-btn" class="btn btn-primary btn-glow btn-block">
+                        <span data-en="Confirm the plan! 💌" data-pl="Potwierdzam plan! 💌">Confirm the plan! 💌</span>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- SECTION 4: FINAL CONFIRMATION -->
+        <section id="final-screen" class="screen">
+            <div class="card glass">
+                <div class="card-icon final-heart animate-bounce" style="font-size: 3rem; color: #ff4d6d;">
+                    <i class="fa-solid fa-heart-circle-check"></i>
+                </div>
+                <h2 class="romantic-title" data-en="It's a date! 💖" data-pl="Jesteśmy umówieni! 💖">It's a date! 💖</h2>
+                
+                <div class="summary-box">
+                    <p id="summary-text">...</p>
+                </div>
+                
+                <p class="subtitle" data-en="I can't wait! Send me this summary in a message so I can save it in my calendar! 👇" data-pl="Już się nie mogę doczekać! Wyślij mi to podsumowanie w wiadomości, żebym mógł zapisać w kalendarzu! 👇">I can't wait! Send me this summary in a message so I can save it in my calendar! 👇</p>
+                
+                <button id="send-whatsapp-btn" class="btn btn-whatsapp btn-block">
+                    <i class="fa-brands fa-whatsapp"></i> <span data-en="Send on WhatsApp" data-pl="Wyślij na WhatsApp">Send on WhatsApp</span>
+                </button>
+                
+                <button id="send-sms-btn" class="btn btn-sms btn-block">
+                    <i class="fa-solid fa-comment-sms"></i> <span data-en="Send by SMS" data-pl="Wyślij SMSem">Send by SMS</span>
+                </button>
+                
+                <button id="restart-btn" class="btn btn-link" data-en="I want to change something ✏️" data-pl="Chcę coś zmienić ✏️">
+                    I want to change something ✏️
+                </button>
+            </div>
+        </section>
+        
+    </main>
+
+    <!-- Canvas Confetti CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+</body>
+</html>
