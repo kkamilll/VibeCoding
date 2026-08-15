@@ -1,0 +1,936 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GameHub | 8 Games for 2 Players</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./style.css" />
+    <meta
+      name="description"
+      content="8 browser games for 2 players on one computer – Tic-Tac-Toe, Pong, Connect 4, Snake, Battleship, Checkers, Air Hockey, Memo. Great fun!"
+    />
+    <meta property="og:title" content="GameHub | 8 Games for 2 Players" />
+    <meta
+      property="og:description"
+      content="Collection of 8 classic games for two players on a single screen."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://mygamesproject.netlify.app/" />
+    <link rel="canonical" href="https://mygamesproject.netlify.app/" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>"
+    />
+  </head>
+  <body>
+    <div class="bg-orbs">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+    </div>
+    <canvas id="cyber-particles"></canvas>
+    <div id="confetti-container"></div>
+
+    <!-- MENU -->
+    <div id="menu-screen" class="screen active">
+      <!-- TOP HEADER BAR -->
+      <div class="main-header-bar">
+        <!-- LEFT: PROFILES & TOURNAMENT SCORE -->
+        <div class="header-group header-group-left">
+          <div class="player-profile-pill" onclick="openProfileModal(1)" title="Edit Player 1 Profile">
+            <span class="avatar-badge" id="p1-avatar-display">👾</span>
+            <span class="player-name" id="p1-name-display">Player 1</span>
+          </div>
+          <div class="versus-badge">VS</div>
+          <div class="player-profile-pill" onclick="openProfileModal(2)" title="Edit Player 2 Profile">
+            <span class="avatar-badge" id="p2-avatar-display">🤖</span>
+            <span class="player-name" id="p2-name-display">Player 2 / CPU</span>
+          </div>
+          <div class="tournament-score-capsule">
+            <span class="capsule-icon">🏆</span>
+            <span class="capsule-scores">
+              <span id="global-s1">0</span> <span class="score-colon">:</span> <span id="global-s2">0</span>
+            </span>
+            <button class="reset-score-btn" onclick="resetGlobalScores()" title="Reset Tournament Scores">🗑️</button>
+          </div>
+        </div>
+
+        <!-- RIGHT: CPU TOGGLE, CUSTOM SEGMENTED DIFFICULTY, SOUND, TUTORIAL -->
+        <div class="header-group header-group-right">
+          <label class="toggle-mode-pill" title="Toggle CPU Opponent">
+            <input type="checkbox" id="ai-toggle" onchange="toggleAI()" />
+            <span class="toggle-slider-pill"></span>
+            <span class="toggle-label-pill">1 Player (CPU)</span>
+          </label>
+
+          <div class="custom-diff-picker" title="CPU Difficulty Level">
+            <button class="diff-btn" data-diff="easy" onclick="setDifficulty('easy')">Easy</button>
+            <button class="diff-btn active" data-diff="medium" onclick="setDifficulty('medium')">Medium</button>
+            <button class="diff-btn" data-diff="hard" onclick="setDifficulty('hard')">Master 👑</button>
+          </div>
+
+          <div class="volume-control-pill" title="Audio Volume">
+            <span class="vol-icon" id="vol-icon">🔊</span>
+            <input type="range" id="volume-slider" min="0" max="100" value="80" oninput="changeMasterVolume(this.value)" />
+          </div>
+
+          <button class="header-action-btn tutorial-btn" onclick="showRules()" title="Tutorial & Rules">
+            <span class="btn-icon">❓</span> Tutorial
+          </button>
+        </div>
+      </div>
+      <header class="hero">
+        <div class="badge">🎮 8 Games · 2 Players</div>
+        <h1>GameHub</h1>
+      </header>
+      <!-- GAMES LIBRARY HEADER -->
+      <div class="library-header">
+        <div class="library-title-group">
+          <h2>GAMES LIBRARY - SELECT YOUR CHALLENGE</h2>
+        </div>
+      </div>
+
+      <div class="game-grid">
+        <!-- 1. TIC-TAC-TOE -->
+        <div class="game-card" onclick="launchGame('tictactoe')" id="card-tictactoe">
+          <div class="card-header-title">TIC-TAC-TOE</div>
+          <div class="preview-box">
+            <svg class="preview-svg" viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <filter id="tttGlow">
+                  <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+                  <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
+              </defs>
+              <line x1="55" y1="15" x2="55" y2="105" stroke="#a78bfa" stroke-width="4" stroke-linecap="round"/>
+              <line x1="105" y1="15" x2="105" y2="105" stroke="#a78bfa" stroke-width="4" stroke-linecap="round"/>
+              <line x1="15" y1="45" x2="145" y2="45" stroke="#a78bfa" stroke-width="4" stroke-linecap="round"/>
+              <line x1="15" y1="75" x2="145" y2="75" stroke="#a78bfa" stroke-width="4" stroke-linecap="round"/>
+              <g filter="url(#tttGlow)">
+                <line x1="25" y1="20" x2="45" y2="40" stroke="#06b6d4" stroke-width="5" stroke-linecap="round"/>
+                <line x1="45" y1="20" x2="25" y2="40" stroke="#06b6d4" stroke-width="5" stroke-linecap="round"/>
+                <circle cx="80" cy="30" r="12" stroke="#ef4444" stroke-width="5" fill="none"/>
+                <line x1="70" y1="50" x2="90" y2="70" stroke="#ef4444" stroke-width="5" stroke-linecap="round"/>
+                <line x1="90" y1="50" x2="70" y2="70" stroke="#ef4444" stroke-width="5" stroke-linecap="round"/>
+                <circle cx="125" cy="90" r="12" stroke="#06b6d4" stroke-width="5" fill="none"/>
+              </g>
+            </svg>
+          </div>
+          <div class="card-btn-container">
+            <button class="pill-play-btn">PLAY NOW</button>
+          </div>
+          <div class="card-footer-info">
+            <span>1 vs 1 / CPU</span>
+            <span class="card-tag">Beginner</span>
+          </div>
+        </div>
+
+        <!-- 2. PONG -->
+        <div class="game-card" onclick="launchGame('pong')" id="card-pong">
+          <div class="card-header-title">PONG</div>
+          <div class="preview-box">
+            <svg class="preview-svg" viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+              <rect x="10" y="10" width="140" height="100" rx="10" fill="#0a0a14" stroke="#06b6d4" stroke-width="2.5"/>
+              <line x1="80" y1="10" x2="80" y2="110" stroke="rgba(6,182,212,0.4)" stroke-width="2" stroke-dasharray="6,6"/>
+              <circle cx="50" cy="50" r="3" fill="rgba(255,255,255,0.2)"/>
+              <circle cx="58" cy="48" r="4.5" fill="rgba(255,255,255,0.5)"/>
+              <circle cx="67" cy="45" r="6" fill="#ffffff"/>
+              <rect x="20" y="32" width="8" height="38" rx="4" fill="#7c3aed"/>
+              <rect x="132" y="50" width="8" height="38" rx="4" fill="#ef4444"/>
+            </svg>
+          </div>
+          <div class="card-btn-container">
+            <button class="pill-play-btn">MATCHMAKING</button>
+          </div>
+          <div class="card-footer-info">
+            <span>1 vs 1 / CPU</span>
+            <span class="card-tag">Retro</span>
+          </div>
+        </div>
+
+        <!-- 3. CONNECT 4 -->
+        <div class="game-card" onclick="launchGame('connect4')" id="card-connect4">
+          <div class="card-header-title">CONNECT 4</div>
+          <div class="preview-box">
+            <svg class="preview-svg" viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+              <rect x="15" y="15" width="130" height="90" rx="10" fill="#1e1b4b" stroke="#ef4444" stroke-width="2.5"/>
+              <circle cx="35" cy="35" r="9" fill="#f59e0b"/>
+              <circle cx="65" cy="35" r="9" fill="#ef4444"/>
+              <circle cx="95" cy="35" r="9" fill="#f59e0b"/>
+              <circle cx="125" cy="35" r="9" fill="#ef4444"/>
+              <circle cx="35" cy="60" r="9" fill="#ef4444"/>
+              <circle cx="65" cy="60" r="9" fill="#f59e0b"/>
+              <circle cx="95" cy="60" r="9" fill="#ef4444"/>
+              <circle cx="125" cy="60" r="9" fill="#f59e0b"/>
+              <circle cx="35" cy="85" r="9" fill="#f59e0b"/>
+              <circle cx="65" cy="85" r="9" fill="#ef4444"/>
+              <circle cx="95" cy="85" r="9" fill="#f59e0b"/>
+              <circle cx="125" cy="85" r="9" fill="#ef4444"/>
+              <line x1="35" y1="85" x2="125" y2="85" stroke="#10b981" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="card-btn-container">
+            <button class="pill-play-btn">CHALLENGE</button>
+          </div>
+          <div class="card-footer-info">
+            <span>1 vs 1 / CPU</span>
+            <span class="card-tag">Strategy</span>
+          </div>
+        </div>
+
+        <!-- 4. SNAKE -->
+        <div class="game-card" onclick="launchGame('snake')" id="card-snake">
+          <div class="card-header-title">SNAKE</div>
+          <div class="preview-box">
+            <svg class="preview-svg" viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+              <path d="M 25 90 L 130 90 L 130 50 L 50 50 L 50 25 L 110 25" stroke="#10b981" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <circle cx="115" cy="25" r="7" fill="#10b981"/>
+              <circle cx="118" cy="22" r="2" fill="#000000"/>
+              <circle cx="135" cy="25" r="6" fill="#ef4444"/>
+              <circle cx="85" cy="90" r="6" fill="#f59e0b"/>
+            </svg>
+          </div>
+          <div class="card-btn-container">
+            <button class="pill-play-btn">REPLAY</button>
+          </div>
+          <div class="card-footer-info">
+            <span>1 vs 1 / CPU</span>
+            <span class="card-tag">Arcade</span>
+          </div>
+        </div>
+
+        <!-- 5. BATTLESHIP -->
+        <div class="game-card" onclick="launchGame('battleship')" id="card-battleship">
+          <div class="card-header-title">BATTLESHIP</div>
+          <div class="preview-box">
+            <svg class="preview-svg" viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+              <rect x="10" y="10" width="140" height="100" rx="8" fill="#0b132b" stroke="#3b82f6" stroke-width="2"/>
+              <line x1="10" y1="43" x2="150" y2="43" stroke="rgba(59,130,246,0.25)" stroke-width="1"/>
+              <line x1="10" y1="76" x2="150" y2="76" stroke="rgba(59,130,246,0.25)" stroke-width="1"/>
+              <line x1="56" y1="10" x2="56" y2="110" stroke="rgba(59,130,246,0.25)" stroke-width="1"/>
+              <line x1="103" y1="10" x2="103" y2="110" stroke="rgba(59,130,246,0.25)" stroke-width="1"/>
+              <circle cx="115" cy="60" r="28" stroke="#06b6d4" stroke-width="1.5" fill="none"/>
+              <line x1="115" y1="32" x2="115" y2="88" stroke="#06b6d4" stroke-width="1"/>
+              <line x1="87" y1="60" x2="143" y2="60" stroke="#06b6d4" stroke-width="1"/>
+              <rect x="20" y="22" width="55" height="12" rx="6" fill="#f59e0b"/>
+              <rect x="25" y="85" width="40" height="12" rx="6" fill="#ef4444"/>
+            </svg>
+          </div>
+          <div class="card-btn-container">
+            <button class="pill-play-btn">ATTACK</button>
+          </div>
+          <div class="card-footer-info">
+            <span>1 vs 1 / CPU</span>
+            <span class="card-tag">Tactical</span>
+          </div>
+        </div>
+
+        <!-- 6. CHECKERS -->
+        <div class="game-card" onclick="launchGame('checkers')" id="card-checkers">
+          <div class="card-header-title">CHECKERS</div>
+          <div class="preview-box">
+            <svg class="preview-svg" viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="redPiece" cx="30%" cy="30%" r="70%">
+                  <stop offset="0%" stop-color="#f87171"/>
+                  <stop offset="100%" stop-color="#dc2626"/>
+                </radialGradient>
+                <radialGradient id="amberPiece" cx="30%" cy="30%" r="70%">
+                  <stop offset="0%" stop-color="#fde047"/>
+                  <stop offset="100%" stop-color="#d97706"/>
+                </radialGradient>
+                <filter id="glow">
+                  <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+                  <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
+              </defs>
+              <rect x="30" y="10" width="100" height="100" rx="8" fill="#0f172a" stroke="#f59e0b" stroke-width="2.5"/>
+              <rect x="30" y="10" width="25" height="25" fill="#f59e0b" opacity="0.25"/>
+              <rect x="80" y="10" width="25" height="25" fill="#f59e0b" opacity="0.25"/>
+              <rect x="55" y="35" width="25" height="25" fill="#f59e0b" opacity="0.25"/>
+              <rect x="105" y="35" width="25" height="25" fill="#f59e0b" opacity="0.25"/>
+              <rect x="30" y="60" width="25" height="25" fill="#f59e0b" opacity="0.25"/>
+              <rect x="80" y="60" width="25" height="25" fill="#f59e0b" opacity="0.25"/>
+              <rect x="55" y="85" width="25" height="25" fill="#f59e0b" opacity="0.25"/>
+              <rect x="105" y="85" width="25" height="25" fill="#f59e0b" opacity="0.25"/>
+              <circle cx="55" cy="47.5" r="9" fill="none" stroke="#06b6d4" stroke-width="1.5" stroke-dasharray="3,3" filter="url(#glow)"/>
+              <g filter="url(#glow)">
+                <circle cx="42.5" cy="22.5" r="9" fill="url(#redPiece)" stroke="#ffffff" stroke-width="1.5"/>
+                <circle cx="42.5" cy="22.5" r="5" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+                <circle cx="92.5" cy="22.5" r="9" fill="url(#redPiece)" stroke="#ffffff" stroke-width="1.5"/>
+                <circle cx="92.5" cy="22.5" r="5" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+              </g>
+              <g filter="url(#glow)">
+                <circle cx="67.5" cy="97.5" r="9" fill="url(#amberPiece)" stroke="#ffffff" stroke-width="1.5"/>
+                <circle cx="67.5" cy="97.5" r="5" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1"/>
+                <circle cx="42.5" cy="72.5" r="9" fill="url(#amberPiece)" stroke="#ffffff" stroke-width="1.5"/>
+                <path d="M 37.5 75.5 L 37.5 70.5 L 39.5 72.5 L 42.5 69.5 L 45.5 72.5 L 47.5 70.5 L 47.5 75.5 Z" fill="#ffffff"/>
+              </g>
+            </svg>
+          </div>
+          <div class="card-btn-container">
+            <button class="pill-play-btn">PLAY NOW</button>
+          </div>
+          <div class="card-footer-info">
+            <span>1 vs 1 / CPU</span>
+            <span class="card-tag">Classic</span>
+          </div>
+        </div>
+
+        <!-- 7. AIR HOCKEY -->
+        <div class="game-card" onclick="launchGame('airhockey')" id="card-airhockey">
+          <div class="card-header-title">AIR HOCKEY</div>
+          <div class="preview-box">
+            <svg class="preview-svg" viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+              <rect x="10" y="10" width="140" height="100" rx="12" fill="#0a0a14" stroke="#ec4899" stroke-width="2.5"/>
+              <line x1="80" y1="10" x2="80" y2="110" stroke="#ec4899" stroke-width="2"/>
+              <circle cx="80" cy="60" r="22" stroke="#ec4899" stroke-width="2" fill="none"/>
+              <circle cx="35" cy="60" r="11" fill="#06b6d4" stroke="#ffffff" stroke-width="2"/>
+              <circle cx="125" cy="60" r="11" fill="#ec4899" stroke="#ffffff" stroke-width="2"/>
+              <circle cx="95" cy="45" r="6" fill="#ffffff" filter="drop-shadow(0 0 4px #ffffff)"/>
+            </svg>
+          </div>
+          <div class="card-btn-container">
+            <button class="pill-play-btn">FIGHT!</button>
+          </div>
+          <div class="card-footer-info">
+            <span>1 vs 1 / CPU</span>
+            <span class="card-tag">Fast</span>
+          </div>
+        </div>
+
+        <!-- 8. MEMO -->
+        <div class="game-card" onclick="launchGame('memo')" id="card-memo">
+          <div class="card-header-title">MEMO</div>
+          <div class="preview-box">
+            <svg class="preview-svg" viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+              <rect x="20" y="15" width="50" height="40" rx="8" fill="#1e1b4b" stroke="#8b5cf6" stroke-width="2"/>
+              <path d="M 45 25 L 48 34 L 57 34 L 50 40 L 53 49 L 45 43 L 37 49 L 40 40 L 33 34 L 42 34 Z" fill="#f59e0b"/>
+              <rect x="90" y="15" width="50" height="40" rx="8" fill="#1e1b4b" stroke="#8b5cf6" stroke-width="2"/>
+              <path d="M 115 25 L 118 34 L 127 34 L 120 40 L 123 49 L 115 43 L 107 49 L 110 40 L 103 34 L 112 34 Z" fill="#f59e0b"/>
+              <rect x="20" y="65" width="50" height="40" rx="8" fill="#1e1b4b" stroke="#8b5cf6" stroke-width="2"/>
+              <circle cx="45" cy="85" r="10" fill="#06b6d4"/>
+              <rect x="90" y="65" width="50" height="40" rx="8" fill="#1e1b4b" stroke="#8b5cf6" stroke-width="2"/>
+              <circle cx="115" cy="85" r="10" fill="#06b6d4"/>
+            </svg>
+          </div>
+          <div class="card-btn-container">
+            <button class="pill-play-btn">MEMORIZE</button>
+          </div>
+          <div class="card-footer-info">
+            <span>1 vs 1 / CPU</span>
+            <span class="card-tag">Puzzle</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TIC-TAC-TOE -->
+    <div id="tictactoe-screen" class="screen game-screen">
+      <div class="game-header">
+        <button class="back-btn" onclick="goBack()">← Menu</button>
+        <h2 class="game-title">⭕ Tic-Tac-Toe</h2>
+        <div class="header-right">
+          <button
+            class="header-btn"
+            onclick="restartCurrentGame()"
+            title="New Game"
+          >
+            🔄
+          </button>
+          <button class="header-btn" onclick="showRules()" title="Rules">
+            ℹ️
+          </button>
+          <button
+            class="header-btn sound-toggle"
+            onclick="toggleSound()"
+            title="Sound"
+          >
+            🔊
+          </button>
+        </div>
+      </div>
+      <div class="players-bar">
+        <div class="player-indicator" id="ttt-p1">Player 1 (X)</div>
+        <div class="vs-divider">VS</div>
+        <div class="player-indicator" id="ttt-p2">Player 2 (O)</div>
+      </div>
+      <div id="ttt-status" class="status-msg">Player 1's Turn (X)</div>
+      <div id="ttt-board" class="ttt-board"></div>
+      <div class="controls-bar">
+        <button class="btn-reset" onclick="tttReset()">🔄 New Game</button>
+        <button class="btn-reset secondary" onclick="showRules()">ℹ️ Rules</button>
+      </div>
+      <div class="score-panel">
+        <span>Player 1: <b id="ttt-s1">0</b></span>
+        <span>Draws: <b id="ttt-sd">0</b></span>
+        <span>Player 2: <b id="ttt-s2">0</b></span>
+      </div>
+      <div class="controls-hint">
+        <span>⭕ 3 marks in a row win</span>
+        <span>🖱️ Click any free cell</span>
+      </div>
+    </div>
+
+    <!-- PONG -->
+    <div id="pong-screen" class="screen game-screen">
+      <div class="game-header">
+        <button class="back-btn" onclick="goBack()">← Menu</button>
+        <h2 class="game-title">🏓 Pong</h2>
+        <div class="header-right">
+          <button
+            class="header-btn"
+            onclick="restartCurrentGame()"
+            title="New Game"
+          >
+            🔄
+          </button>
+          <button class="header-btn" onclick="showRules()" title="Rules">
+            ℹ️
+          </button>
+          <button
+            class="header-btn sound-toggle"
+            onclick="toggleSound()"
+            title="Sound"
+          >
+            🔊
+          </button>
+        </div>
+      </div>
+      <div class="score-panel pong-score">
+        <span>🟦 Player 1: <b id="pong-s1">0</b></span>
+        <span>🟥 Player 2: <b id="pong-s2">0</b></span>
+      </div>
+      <div class="pong-wrapper">
+        <canvas id="pong-canvas" width="800" height="450"></canvas>
+        <div id="pong-overlay" class="pong-overlay" onclick="pongStart()">
+          <div class="overlay-box" onclick="event.stopPropagation(); pongStart();">
+            <p id="pong-overlay-msg">Ready for Pong?</p>
+            <button id="pong-overlay-btn" class="btn-reset overlay-btn-pulse" onclick="pongStart()">▶ Continue (Space)</button>
+          </div>
+        </div>
+        <div id="mobile-pong-zones" class="mobile-touch-zones">
+          <div class="touch-zone" id="pong-zone-1">P1 Touch</div>
+          <div class="touch-zone" id="pong-zone-2">P2 Touch</div>
+        </div>
+      </div>
+      <div class="controls-hint">
+        <span>🟦 Player 1: <kbd>W</kbd> / <kbd>S</kbd></span>
+        <span>⚡ Catch power-ups!</span>
+        <span>🟥 Player 2: <kbd>↑</kbd> / <kbd>↓</kbd></span>
+      </div>
+    </div>
+
+    <!-- CONNECT 4 -->
+    <div id="connect4-screen" class="screen game-screen">
+      <div class="game-header">
+        <button class="back-btn" onclick="goBack()">← Menu</button>
+        <h2 class="game-title">🔴 Connect 4</h2>
+        <div class="header-right">
+          <button
+            class="header-btn"
+            onclick="restartCurrentGame()"
+            title="New Game"
+          >
+            🔄
+          </button>
+          <button class="header-btn" onclick="showRules()" title="Rules">
+            ℹ️
+          </button>
+          <button
+            class="header-btn sound-toggle"
+            onclick="toggleSound()"
+            title="Sound"
+          >
+            🔊
+          </button>
+        </div>
+      </div>
+      <div class="players-bar">
+        <div class="player-indicator c4-p1" id="c4-p1i">Player 1 🔴</div>
+        <div class="vs-divider">VS</div>
+        <div class="player-indicator c4-p2" id="c4-p2i">Player 2 🔵</div>
+      </div>
+      <div id="c4-status" class="status-msg">Player 1's Turn 🔴</div>
+      <div id="c4-board-wrapper">
+        <div id="c4-col-btns" class="c4-col-btns"></div>
+        <div id="c4-board" class="c4-board"></div>
+      </div>
+      <div class="controls-bar">
+        <button class="btn-reset" onclick="c4Reset()">🔄 New Game</button>
+        <button class="btn-reset secondary" onclick="showRules()">ℹ️ Rules</button>
+      </div>
+      <div class="score-panel">
+        <span>Player 1: <b id="c4-s1">0</b></span>
+        <span>Player 2: <b id="c4-s2">0</b></span>
+      </div>
+      <div class="controls-hint">
+        <span>🔴 4 in a row (horizontal, vertical, diagonal)</span>
+        <span>🖱️ Click a column to drop a chip</span>
+      </div>
+    </div>
+
+    <!-- SNAKE -->
+    <div id="snake-screen" class="screen game-screen">
+      <div class="game-header">
+        <button class="back-btn" onclick="goBack()">← Menu</button>
+        <h2 class="game-title">🐍 Snake</h2>
+        <div class="header-right">
+          <button
+            class="header-btn"
+            onclick="restartCurrentGame()"
+            title="New Game"
+          >
+            🔄
+          </button>
+          <button class="header-btn" onclick="showRules()" title="Rules">
+            ℹ️
+          </button>
+          <button
+            class="header-btn sound-toggle"
+            onclick="toggleSound()"
+            title="Sound"
+          >
+            🔊
+          </button>
+        </div>
+      </div>
+      <div class="score-panel snake-score">
+        <span>🟢 Player 1: <b id="snake-s1">0</b></span>
+        <span>🟣 Player 2: <b id="snake-s2">0</b></span>
+      </div>
+      <div class="pong-wrapper">
+        <canvas id="snake-canvas" width="600" height="600"></canvas>
+        <div id="snake-overlay" class="pong-overlay" onclick="snakeStart()">
+          <div class="overlay-box" onclick="event.stopPropagation(); snakeStart();">
+            <p id="snake-overlay-msg">2-Player Snake Arena!</p>
+            <button id="snake-overlay-btn" class="btn-reset overlay-btn-pulse" onclick="snakeStart()">▶ Continue (Space)</button>
+          </div>
+        </div>
+      </div>
+      <div class="controls-hint">
+        <span>🟢 Player 1: <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></span>
+        <span>🍎+1 ⭐+3 ⚡Boost 🛡Shield</span>
+        <span>🟣 Player 2: <kbd>↑</kbd><kbd>←</kbd><kbd>↓</kbd><kbd>→</kbd></span>
+      </div>
+      <div id="mobile-controls-snake" class="mobile-controls">
+        <div class="dpad dpad-left">
+          <button
+            class="dbtn up"
+            onpointerdown="triggerKey('w')"
+            onpointerup="releaseKey('w')"
+          >
+            ▲
+          </button>
+          <button
+            class="dbtn left"
+            onpointerdown="triggerKey('a')"
+            onpointerup="releaseKey('a')"
+          >
+            ◀
+          </button>
+          <button
+            class="dbtn right"
+            onpointerdown="triggerKey('d')"
+            onpointerup="releaseKey('d')"
+          >
+            ▶
+          </button>
+          <button
+            class="dbtn down"
+            onpointerdown="triggerKey('s')"
+            onpointerup="releaseKey('s')"
+          >
+            ▼
+          </button>
+        </div>
+        <div class="dpad dpad-right">
+          <button
+            class="dbtn up"
+            onpointerdown="triggerKey('ArrowUp')"
+            onpointerup="releaseKey('ArrowUp')"
+          >
+            ▲
+          </button>
+          <button
+            class="dbtn left"
+            onpointerdown="triggerKey('ArrowLeft')"
+            onpointerup="releaseKey('ArrowLeft')"
+          >
+            ◀
+          </button>
+          <button
+            class="dbtn right"
+            onpointerdown="triggerKey('ArrowRight')"
+            onpointerup="releaseKey('ArrowRight')"
+          >
+            ▶
+          </button>
+          <button
+            class="dbtn down"
+            onpointerdown="triggerKey('ArrowDown')"
+            onpointerup="releaseKey('ArrowDown')"
+          >
+            ▼
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- BATTLESHIP -->
+    <div id="battleship-screen" class="screen game-screen">
+      <div class="game-header">
+        <button class="back-btn" onclick="goBack()">← Menu</button>
+        <h2 class="game-title">⚓ Battleship</h2>
+        <div class="header-right">
+          <button
+            class="header-btn"
+            onclick="restartCurrentGame()"
+            title="New Game"
+          >
+            🔄
+          </button>
+          <button class="header-btn" onclick="showRules()" title="Rules">
+            ℹ️
+          </button>
+          <button
+            class="header-btn sound-toggle"
+            onclick="toggleSound()"
+            title="Sound"
+          >
+            🔊
+          </button>
+        </div>
+      </div>
+      <div id="bs-phase-msg" class="status-msg">
+        Player 1 – Deploy your fleet
+      </div>
+      <div id="bs-container">
+        <div class="bs-side" id="bs-left">
+          <h3 id="bs-left-title">Your Board (Player 1)</h3>
+          <div id="bs-my-board" class="bs-grid"></div>
+          <div id="bs-ship-selector" class="ship-selector"></div>
+          <div class="bs-controls">
+            <button
+              id="bs-rotate-btn"
+              class="btn-reset small"
+              onclick="bsToggleRotate()"
+            >
+              ↔ Horizontal
+            </button>
+            <button
+              id="bs-auto-btn"
+              class="btn-reset small"
+              onclick="bsAutoPlace()"
+            >
+              🎲 Random
+            </button>
+          </div>
+          <button
+            id="bs-ready-btn"
+            class="btn-reset"
+            onclick="bsReady()"
+            style="display: none"
+          >
+            ✅ Ready!
+          </button>
+        </div>
+        <div class="bs-side" id="bs-right">
+          <h3 id="bs-right-title">Enemy Grid (Player 2)</h3>
+          <div id="bs-enemy-board" class="bs-grid locked"></div>
+          <div id="bs-ship-status" class="bs-ship-status"></div>
+        </div>
+      </div>
+      <div class="controls-bar">
+        <button class="btn-reset" onclick="bsReset()">🔄 New Game</button>
+        <button class="btn-reset secondary" onclick="showRules()">ℹ️ Rules</button>
+      </div>
+      <div class="controls-hint">
+        <span>⚓ Phase 1: Deploy ships on grid (<kbd>R</kbd> rotate)</span>
+        <span>💥 Phase 2: Fire at enemy grid!</span>
+      </div>
+    </div>
+
+    <!-- CHECKERS -->
+    <div id="checkers-screen" class="screen game-screen">
+      <div class="game-header">
+        <button class="back-btn" onclick="goBack()">← Menu</button>
+        <h2 class="game-title">♟️ Checkers</h2>
+        <div class="header-right">
+          <button
+            class="header-btn"
+            onclick="restartCurrentGame()"
+            title="New Game"
+          >
+            🔄
+          </button>
+          <button class="header-btn" onclick="showRules()" title="Rules">
+            ℹ️
+          </button>
+          <button
+            class="header-btn sound-toggle"
+            onclick="toggleSound()"
+            title="Sound"
+          >
+            🔊
+          </button>
+        </div>
+      </div>
+      <div class="players-bar">
+        <div class="player-indicator" id="chk-p1">⬛ Player 1 (Dark)</div>
+        <div class="vs-divider">VS</div>
+        <div class="player-indicator" id="chk-p2">⬜ Player 2 (Light)</div>
+      </div>
+      <div id="chk-status" class="status-msg">Player 1's Turn</div>
+      <div id="chk-board" class="chk-board"></div>
+      <div class="controls-bar">
+        <button class="btn-reset" onclick="chkReset()">🔄 New Game</button>
+        <button class="btn-reset secondary" onclick="showRules()">ℹ️ Rules</button>
+      </div>
+      <div class="score-panel">
+        <span>Player 1: <b id="chk-s1">0</b></span>
+        <span>Player 2: <b id="chk-s2">0</b></span>
+      </div>
+      <div class="controls-hint">
+        <span>♟️ Move diagonally</span>
+        <span>⚡ Mandatory jump</span>
+        <span>♛ King moves in both directions</span>
+      </div>
+    </div>
+
+    <!-- AIR HOCKEY -->
+    <div id="airhockey-screen" class="screen game-screen">
+      <div class="game-header">
+        <button class="back-btn" onclick="goBack()">← Menu</button>
+        <h2 class="game-title">🏒 Air Hockey</h2>
+        <div class="header-right">
+          <button
+            class="header-btn"
+            onclick="restartCurrentGame()"
+            title="New Game"
+          >
+            🔄
+          </button>
+          <button class="header-btn" onclick="showRules()" title="Rules">
+            ℹ️
+          </button>
+          <button
+            class="header-btn sound-toggle"
+            onclick="toggleSound()"
+            title="Sound"
+          >
+            🔊
+          </button>
+        </div>
+      </div>
+      <div class="score-panel pong-score">
+        <span>🔵 Player 1: <b id="ah-s1">0</b></span>
+        <span>🔴 Player 2: <b id="ah-s2">0</b></span>
+      </div>
+      <div class="pong-wrapper">
+        <canvas id="ah-canvas" width="700" height="500"></canvas>
+        <div id="ah-overlay" class="pong-overlay" onclick="ahStart()">
+          <div class="overlay-box" onclick="event.stopPropagation(); ahStart();">
+            <p id="ah-overlay-msg">Air Hockey Arena!</p>
+            <button id="ah-overlay-btn" class="btn-reset overlay-btn-pulse" onclick="ahStart()">▶ Continue (Space)</button>
+          </div>
+        </div>
+        <div id="mobile-ah-zones" class="mobile-touch-zones">
+          <div class="touch-zone" id="ah-zone-1">P1 Touch</div>
+          <div class="touch-zone" id="ah-zone-2">P2 Touch</div>
+        </div>
+      </div>
+      <div class="controls-hint">
+        <span>🔵 Player 1: <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></span>
+        <span>Goal: Score 7 goals to win</span>
+        <span>🔴 Player 2: <kbd>↑</kbd><kbd>←</kbd><kbd>↓</kbd><kbd>→</kbd></span>
+      </div>
+    </div>
+
+    <!-- MEMO -->
+    <div id="memo-screen" class="screen game-screen">
+      <div class="game-header">
+        <button class="back-btn" onclick="goBack()">← Menu</button>
+        <h2 class="game-title">🃏 Memo</h2>
+        <div class="header-right">
+          <button
+            class="header-btn"
+            onclick="restartCurrentGame()"
+            title="New Game"
+          >
+            🔄
+          </button>
+          <button class="header-btn" onclick="showRules()" title="Rules">
+            ℹ️
+          </button>
+          <button
+            class="header-btn sound-toggle"
+            onclick="toggleSound()"
+            title="Sound"
+          >
+            🔊
+          </button>
+        </div>
+      </div>
+      <div class="players-bar">
+        <div class="player-indicator" id="memo-p1">Player 1</div>
+        <div class="vs-divider">VS</div>
+        <div class="player-indicator" id="memo-p2">Player 2</div>
+      </div>
+      <div id="memo-status" class="status-msg">
+        Player 1's Turn – Flip 2 cards!
+      </div>
+      <div id="memo-board" class="memo-board"></div>
+      <div class="controls-bar">
+        <button class="btn-reset" onclick="memoReset()">🔄 New Game</button>
+        <button class="btn-reset secondary" onclick="showRules()">ℹ️ Rules</button>
+      </div>
+      <div class="score-panel">
+        <span>Player 1: <b id="memo-s1">0</b> pairs</span>
+        <span>Player 2: <b id="memo-s2">0</b> pairs</span>
+      </div>
+      <div class="controls-hint">
+        <span>🃏 Flip 2 cards to match pairs</span>
+        <span>⭐ Match grants an extra turn!</span>
+      </div>
+    </div>
+
+    <!-- BATTLESHIP TURN OVERLAY -->
+    <div id="bs-turn-overlay" class="bs-turn-overlay hidden" onclick="bsStartTurn()">
+      <div class="bs-overlay-box" onclick="event.stopPropagation(); bsStartTurn();">
+        <h2>⚓ Battleship</h2>
+        <h3 id="bs-overlay-player-title">Player 2's Turn</h3>
+        <p>Pass the device to the other player and click below or press Space.</p>
+        <button id="bs-turn-overlay-btn" class="btn-reset overlay-btn-pulse" onclick="bsStartTurn()">
+          ▶ Continue Turn (Space)
+        </button>
+      </div>
+    </div>
+
+    <!-- COUNTDOWN ANIMATION OVERLAY -->
+    <div id="countdown-overlay" class="countdown-overlay hidden">
+      <div class="countdown-card">
+        <div class="countdown-header-badge">⚔️ MATCH DUEL</div>
+        <div class="countdown-players-bar">
+          <div class="cd-player-pill p1-pill">
+            <span class="cd-avatar" id="cd-p1-avatar">👾</span>
+            <span class="cd-name" id="cd-p1-name">Player 1</span>
+          </div>
+          <div class="cd-vs-badge">VS</div>
+          <div class="cd-player-pill p2-pill">
+            <span class="cd-avatar" id="cd-p2-avatar">🤖</span>
+            <span class="cd-name" id="cd-p2-name">Player 2</span>
+          </div>
+        </div>
+        <div class="countdown-subtext" id="cd-subtext">GET READY!</div>
+        <div class="countdown-display-wrapper">
+          <div class="cd-pulse-ring"></div>
+          <div class="cd-pulse-ring outer"></div>
+          <div class="countdown-number" id="cd-number">3</div>
+        </div>
+        <div class="countdown-hint">
+          <span>⌨️ Position your hands on the keyboard!</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACHIEVEMENTS MODAL -->
+    <div id="achievements-modal" class="modal-backdrop" onclick="hideAchievementsModal()">
+      <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-header">
+          <h3>🏆 Achievements & Stats</h3>
+          <button class="close-modal-btn" onclick="hideAchievementsModal()" title="Close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div id="achievements-grid" class="achievements-grid"></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-reset small" onclick="hideAchievementsModal()">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFILE MODAL -->
+    <div id="profile-modal" class="modal-backdrop" onclick="hideProfileModal()">
+      <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-header">
+          <h3 id="profile-modal-title">Edit Player Profile</h3>
+          <button class="close-modal-btn" onclick="hideProfileModal()" title="Close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="profile-edit-box">
+            <label for="profile-name-input">Player Name:</label>
+            <input type="text" id="profile-name-input" maxlength="12" placeholder="Enter name..." />
+            <label>Select Avatar:</label>
+            <div class="avatar-picker-grid">
+              <button class="avatar-opt" onclick="selectAvatar('👾')">👾</button>
+              <button class="avatar-opt" onclick="selectAvatar('🐉')">🐉</button>
+              <button class="avatar-opt" onclick="selectAvatar('🦊')">🦊</button>
+              <button class="avatar-opt" onclick="selectAvatar('⚡')">⚡</button>
+              <button class="avatar-opt" onclick="selectAvatar('🤖')">🤖</button>
+              <button class="avatar-opt" onclick="selectAvatar('👑')">👑</button>
+              <button class="avatar-opt" onclick="selectAvatar('🚀')">🚀</button>
+              <button class="avatar-opt" onclick="selectAvatar('💀')">💀</button>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-reset small" onclick="saveProfileEdit()">Save Profile</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RULES & TUTORIAL MODAL -->
+    <div id="rules-modal" class="modal-backdrop" onclick="hideRules()">
+      <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-header">
+          <h3 id="modal-game-title">Game Rules</h3>
+          <button class="close-modal-btn" onclick="hideRules()" title="Close">&times;</button>
+        </div>
+        <div class="tutorial-game-selector">
+          <label for="tutorial-game-select">Select Game:</label>
+          <select id="tutorial-game-select" onchange="showRules(this.value)">
+            <option value="tictactoe">⭕ Tic-Tac-Toe</option>
+            <option value="pong">🏓 Pong ⚡</option>
+            <option value="connect4">🔴 Connect 4</option>
+            <option value="snake">🐍 Snake (2-Player)</option>
+            <option value="battleship">⚓ Battleship</option>
+            <option value="checkers">♟️ Checkers</option>
+            <option value="airhockey">🏒 Air Hockey</option>
+            <option value="memo">🃏 Memo</option>
+          </select>
+        </div>
+        <div class="tutorial-tabs">
+          <button id="tab-btn-rules" class="tutorial-tab active" onclick="switchTutorialTab('rules')">📖 Rules</button>
+          <button id="tab-btn-controls" class="tutorial-tab" onclick="switchTutorialTab('controls')">🕹️ Controls</button>
+          <button id="tab-btn-tips" class="tutorial-tab" onclick="switchTutorialTab('tips')">💡 Tips & Strategy</button>
+        </div>
+        <div class="modal-body">
+          <div id="tab-pane-rules" class="tab-pane active"></div>
+          <div id="tab-pane-controls" class="tab-pane hidden"></div>
+          <div id="tab-pane-tips" class="tab-pane hidden"></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-reset small" onclick="hideRules()">
+            Got it, let's play! 🚀
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast-container"></div>
+    <script type="module" src="./script.js"></script>
+  </body>
+</html>

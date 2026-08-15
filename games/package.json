@@ -1,0 +1,18 @@
+{
+  "name": "gamehub-2player",
+  "version": "1.0.0",
+  "description": "GameHub – 8 gier dla 2 graczy na jednym komputerze",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "vite": "^5.2.11"
+  }
+}
+
