@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Centrum Losowań - Koło Fortuny, Butelka, Loteria & Moneta</title>
+  <meta name="description" content="Interaktywne centrum losowań: Koło Fortuny, Zakręć Butelką, Bęben Loterii oraz Orzeł czy Reszka z własnymi wpisami, dźwiękiem i konfetti.">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Canvas dla efektów konfetti -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <div class="app-container">
+    <!-- Nagłówek -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-icon">
+          <i class="fa-solid fa-dharmachakra"></i>
+        </div>
+        <div>
+          <h1 data-i18n="appTitle">Centrum Losowań</h1>
+          <p class="subtitle" data-i18n="appSubtitle">Wpisz opcje i wybierz ulubiony sposób losowania!</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="btn-lang-toggle" class="icon-btn lang-btn" title="Zmień język / Switch Language">
+          <span>PL</span>
+        </button>
+        <button id="btn-shortcuts" class="icon-btn" title="Skróty klawiszowe (Spacja / Enter)">
+          <i class="fa-solid fa-keyboard"></i>
+        </button>
+        <button id="btn-sound-toggle" class="icon-btn" title="Włącz/Wyłącz Dźwięk">
+          <i class="fa-solid fa-volume-high"></i>
+        </button>
+        <button id="btn-fullscreen" class="icon-btn" title="Pełny ekran">
+          <i class="fa-solid fa-expand"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Nawigacja Po Trybach Losowania (Mode Selector) -->
+    <nav class="modes-navbar">
+      <button class="mode-btn active" data-mode="mode-wheel" data-i18n="modeWheel">
+        <i class="fa-solid fa-dharmachakra"></i> Koło Fortuny
+      </button>
+      <button class="mode-btn" data-mode="mode-bottle" data-i18n="modeBottle">
+        <i class="fa-solid fa-wine-bottle"></i> Zakręć Butelką
+      </button>
+      <button class="mode-btn" data-mode="mode-lottery" data-i18n="modeLottery">
+        <i class="fa-solid fa-bowling-ball"></i> Maszyna Loterii
+      </button>
+      <button class="mode-btn" data-mode="mode-coin" data-i18n="modeCoin">
+        <i class="fa-solid fa-coins"></i> Orzeł czy Reszka
+      </button>
+    </nav>
+
+    <!-- Główny układ dwukolumnowy -->
+    <main class="main-content">
+      
+      <!-- Kolumna lewa: Obszar Gry / Trybu -->
+      <section class="game-section">
+        
+        <!-- TRYB 1: Koło Fortuny -->
+        <div class="mode-container active" id="mode-wheel">
+          <div class="game-card">
+            <div class="wheel-wrapper">
+              <div class="wheel-pointer" id="wheel-pointer">
+                <svg viewBox="0 0 40 50" class="pointer-svg">
+                  <path d="M20 50 L5 10 C0 3, 10 0, 20 0 C30 0, 40 3, 35 10 Z" fill="url(#pointer-gradient)" filter="url(#drop-shadow)" />
+                  <defs>
+                    <linearGradient id="pointer-gradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#ff4757" />
+                      <stop offset="100%" stop-color="#ff6b81" />
+                    </linearGradient>
+                    <filter id="drop-shadow" x="-20%" y="-20%" width="140%" height="140%">
+                      <feDropShadow dx="0" dy="4" stdDeviation="3" flood-color="#000" flood-opacity="0.5"/>
+                    </filter>
+                  </defs>
+                </svg>
+              </div>
+              <canvas id="wheel-canvas" width="600" height="600"></canvas>
+              <button id="btn-spin-center" class="spin-center-btn">
+                <span data-i18n="spinCenterBtn">LOSUJ!</span>
+                <i class="fa-solid fa-play"></i>
+              </button>
+            </div>
+            <div class="game-controls">
+              <button id="btn-spin" class="primary-spin-btn" data-i18n="btnSpinWheel">
+                <i class="fa-solid fa-rotate"></i> Zakręć Kołem
+              </button>
+              <button id="btn-shuffle" class="secondary-btn" title="Wymieszaj opcje" data-i18n="btnShuffle">
+                <i class="fa-solid fa-shuffle"></i> Wymieszaj
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- TRYB 2: Zakręć Butelką -->
+        <div class="mode-container" id="mode-bottle">
+          <div class="game-card">
+            <div class="bottle-wrapper">
+              <canvas id="bottle-canvas" width="600" height="600"></canvas>
+            </div>
+            <div class="game-controls">
+              <button id="btn-spin-bottle" class="primary-spin-btn" data-i18n="btnSpinBottle">
+                <i class="fa-solid fa-wine-bottle"></i> Zakręć Butelką!
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- TRYB 3: Maszyna Loterii -->
+        <div class="mode-container" id="mode-lottery">
+          <div class="game-card">
+            <div class="lottery-wrapper">
+              <canvas id="lottery-canvas" width="600" height="600"></canvas>
+            </div>
+            <div class="game-controls">
+              <button id="btn-draw-lottery" class="primary-spin-btn" data-i18n="btnDrawLottery">
+                <i class="fa-solid fa-bowling-ball"></i> Wylosuj Kulę!
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- TRYB 4: Orzeł czy Reszka -->
+        <div class="mode-container" id="mode-coin">
+          <div class="game-card coin-card">
+            <div class="coin-stage">
+              <div class="coin-3d" id="coin-3d">
+                <div class="coin-face coin-front">
+                  <div class="coin-inner">
+                    <i class="fa-solid fa-feather-pointed"></i>
+                    <span data-i18n="coinHeads">ORZEŁ</span>
+                  </div>
+                </div>
+                <div class="coin-face coin-back">
+                  <div class="coin-inner">
+                    <i class="fa-solid fa-coins"></i>
+                    <span data-i18n="coinTails">RESZKA</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="game-controls">
+              <button id="btn-flip-coin" class="primary-spin-btn" data-i18n="btnFlipCoin">
+                <i class="fa-solid fa-coins"></i> Rzuć Monetą!
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Kolumna prawa: Zarządzanie wpisami i ustawienia -->
+      <section class="panel-section">
+        <!-- Nawigacja zakładek -->
+        <div class="tabs-header">
+          <button class="tab-btn active" data-tab="tab-items">
+            <i class="fa-solid fa-list-check"></i> <span data-i18n="tabItems">Elementy</span> (<span id="items-count">0</span>)
+          </button>
+          <button class="tab-btn" data-tab="tab-presets" data-i18n="tabPresets">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Szablony
+          </button>
+          <button class="tab-btn" data-tab="tab-history" data-i18n="tabHistory">
+            <i class="fa-solid fa-clock-rotate-left"></i> Historia
+          </button>
+          <button class="tab-btn" data-tab="tab-settings" data-i18n="tabSettings">
+            <i class="fa-solid fa-sliders"></i> Ustawienia
+          </button>
+        </div>
+
+        <!-- Zakładka 1: Elementy -->
+        <div class="tab-content active" id="tab-items">
+          <div class="add-item-form">
+            <div class="input-group">
+              <input type="text" id="new-item-input" placeholder="Wpisz nową opcję i naciśnij Enter..." data-i18n-placeholder="inputPlaceholder" autocomplete="off">
+              <button id="btn-add-item" class="btn-icon-add" data-i18n="btnAdd">
+                <i class="fa-solid fa-plus"></i> Dodaj
+              </button>
+            </div>
+            <div class="form-actions">
+              <button id="btn-open-bulk" class="btn-text" data-i18n="btnBulk">
+                <i class="fa-solid fa-align-left"></i> Wklej wiele
+              </button>
+              <button id="btn-export-json" class="btn-text" data-i18n="btnExport">
+                <i class="fa-solid fa-download"></i> Eksportuj
+              </button>
+              <button id="btn-import-json" class="btn-text" data-i18n="btnImport">
+                <i class="fa-solid fa-upload"></i> Importuj
+              </button>
+              <input type="file" id="file-import-input" accept=".json,.txt" class="hidden">
+              <button id="btn-clear-items" class="btn-text danger" data-i18n="btnClearItems">
+                <i class="fa-solid fa-trash-can"></i> Wyczyść
+              </button>
+            </div>
+          </div>
+
+          <div class="items-list-container">
+            <ul id="items-list" class="items-list">
+              <!-- Elementy generowane dynamicznie -->
+            </ul>
+            <div id="empty-state" class="empty-state hidden">
+              <i class="fa-solid fa-circle-nodes"></i>
+              <p data-i18n="emptyStateTitle">Brak elementów do losowania.</p>
+              <span data-i18n="emptyStateSub">Wpisz nową opcję powyżej lub wybierz gotowy szablon!</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Zakładka 2: Gotowe szablony -->
+        <div class="tab-content" id="tab-presets">
+          <p class="section-desc" data-i18n="presetsDesc">Wybierz gotowy zestaw opcji jednym kliknięciem:</p>
+          <div class="presets-grid">
+            <button class="preset-card" data-preset="lunch">
+              <div class="preset-icon"><i class="fa-solid fa-utensils"></i></div>
+              <div class="preset-info">
+                <h4 data-i18n="presetLunchTitle">Co na obiad?</h4>
+                <p data-i18n="presetLunchDesc">Pizza, Burger, Sushi, Kebab, Sałatka...</p>
+              </div>
+            </button>
+
+            <button class="preset-card" data-preset="yesno">
+              <div class="preset-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+              <div class="preset-info">
+                <h4 data-i18n="presetYesNoTitle">Tak czy Nie?</h4>
+                <p data-i18n="presetYesNoDesc">Tak, Nie, Zdecydowanie Tak, Może jutro...</p>
+              </div>
+            </button>
+
+            <button class="preset-card" data-preset="chores">
+              <div class="preset-icon"><i class="fa-solid fa-broom"></i></div>
+              <div class="preset-info">
+                <h4 data-i18n="presetChoresTitle">Kto zmywa naczynia?</h4>
+                <p data-i18n="presetChoresDesc">Osoba 1, Osoba 2, Osoba 3, Wszyscy razem</p>
+              </div>
+            </button>
+
+            <button class="preset-card" data-preset="numbers">
+              <div class="preset-icon"><i class="fa-solid fa-arrow-down-1-9"></i></div>
+              <div class="preset-info">
+                <h4 data-i18n="presetNumbersTitle">Liczby 1 - 10</h4>
+                <p data-i18n="presetNumbersDesc">Losowe numery od 1 do 10</p>
+              </div>
+            </button>
+
+            <button class="preset-card" data-preset="truth-dare">
+              <div class="preset-icon"><i class="fa-solid fa-masks-theater"></i></div>
+              <div class="preset-info">
+                <h4 data-i18n="presetTruthDareTitle">Prawda czy Wyzwanie</h4>
+                <p data-i18n="presetTruthDareDesc">Prawda, Wyzwanie, Pytanie od sąsiada...</p>
+              </div>
+            </button>
+
+            <button class="preset-card" data-preset="movies">
+              <div class="preset-icon"><i class="fa-solid fa-film"></i></div>
+              <div class="preset-info">
+                <h4 data-i18n="presetMoviesTitle">Gatunek filmowy</h4>
+                <p data-i18n="presetMoviesDesc">Komedia, Horror, Sci-Fi, Akcja, Dramat...</p>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Zakładka 3: Historia losowań -->
+        <div class="tab-content" id="tab-history">
+          <div class="history-header">
+            <h3 data-i18n="historyTitle">Wyniki ostatnich losowań</h3>
+            <button id="btn-clear-history" class="btn-text danger" data-i18n="btnClearHistory">
+              <i class="fa-solid fa-eraser"></i> Wyczyść historię
+            </button>
+          </div>
+          <ul id="history-list" class="history-list">
+            <!-- Wpisy historii -->
+          </ul>
+          <div id="history-empty" class="empty-state">
+            <i class="fa-solid fa-trophy"></i>
+            <p data-i18n="historyEmptyTitle">Brak historii losowań</p>
+            <span data-i18n="historyEmptySub">Wykonaj losowanie, aby zobaczyć pierwsze wyniki!</span>
+          </div>
+        </div>
+
+        <!-- Zakładka 4: Ustawienia -->
+        <div class="tab-content" id="tab-settings">
+          <div class="settings-group">
+            <div class="setting-item">
+              <div class="setting-info">
+                <label for="spin-duration" data-i18n="labelSpinDuration">Czas trwania losowania</label>
+                <p data-i18n="descSpinDuration">Długość animacji obrotu (3 - 15 s)</p>
+              </div>
+              <div class="setting-control">
+                <input type="range" id="spin-duration" min="3" max="15" value="5" step="1">
+                <span id="spin-duration-val">5s</span>
+              </div>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-info">
+                <label for="auto-remove" data-i18n="labelAutoRemove">Auto-usuwanie wygranego</label>
+                <p data-i18n="descAutoRemove">Automatycznie usuwaj wylosowany element z listy</p>
+              </div>
+              <div class="setting-control">
+                <label class="switch">
+                  <input type="checkbox" id="auto-remove">
+                  <span class="slider round"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-info">
+                <label for="sound-effects" data-i18n="labelSoundEffects">Efekty dźwiękowe</label>
+                <p data-i18n="descSoundEffects">Dźwięki cykania, brzęku monety i fanfary</p>
+              </div>
+              <div class="setting-control">
+                <label class="switch">
+                  <input type="checkbox" id="sound-effects" checked>
+                  <span class="slider round"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-info">
+                <label for="tts-enabled" data-i18n="labelTtsEnabled">Lektor głosowy (Speech API)</label>
+                <p data-i18n="descTtsEnabled">Czytanie na głos wylosowanego zwycięzcy</p>
+              </div>
+              <div class="setting-control">
+                <label class="switch">
+                  <input type="checkbox" id="tts-enabled" checked>
+                  <span class="slider round"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-info">
+                <label for="color-palette" data-i18n="labelColorPalette">Motyw kolorów wycinków</label>
+                <p data-i18n="descColorPalette">Zestaw barw dla sekcji i elementów</p>
+              </div>
+              <div class="setting-control">
+                <select id="color-palette" class="custom-select">
+                  <option value="vibrant" data-i18n="paletteVibrant">Żywy i tęczowy</option>
+                  <option value="neon" data-i18n="paletteNeon">Cyberpunk Neon</option>
+                  <option value="pastel" data-i18n="palettePastel">Subtelny Pastel</option>
+                  <option value="gold" data-i18n="paletteGold">Złoty & Elegancja</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Modal 1: Masowe wklejanie / Edytor tekstowy -->
+  <div id="modal-bulk" class="modal-backdrop hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-pen-to-square"></i> <span data-i18n="modalBulkTitle">Masowy Edytor Opcji</span></h3>
+        <button class="modal-close" data-close="modal-bulk">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p data-i18n="modalBulkBody">Wpisz lub wklej elementy (każda nowa linijka to jeden element):</p>
+        <textarea id="bulk-textarea" rows="10" placeholder="Ania&#10;Bartek&#10;Cezary&#10;Dariusz..." data-i18n-placeholder="bulkPlaceholder"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="secondary-btn" data-close="modal-bulk" data-i18n="btnCancel">Anuluj</button>
+        <button id="btn-save-bulk" class="primary-btn" data-i18n="btnSaveBulk">Zapisz elementy</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Ogłoszenie Wygranej / Zwycięzca -->
+  <div id="modal-winner" class="modal-backdrop hidden">
+    <div class="modal-card winner-card">
+      <div class="winner-crown">
+        <i class="fa-solid fa-crown"></i>
+      </div>
+      <h2 class="winner-title" data-i18n="winnerTitle">WYLOSOWANO!</h2>
+      <div class="winner-box">
+        <span id="winner-text">Zwycięzca</span>
+      </div>
+      <div class="winner-actions">
+        <button id="btn-remove-winner" class="secondary-btn danger" data-i18n="btnRemoveWinner">
+          <i class="fa-solid fa-user-minus"></i> Usuń i losuj dalej
+        </button>
+        <button id="btn-spin-again" class="primary-btn" data-i18n="btnSpinAgain">
+          <i class="fa-solid fa-rotate-right"></i> Zakręć ponownie
+        </button>
+      </div>
+      <button class="modal-close winner-close-btn" data-close="modal-winner">&times;</button>
+    </div>
+  </div>
+
+  <!-- Modal 3: Skróty klawiszowe -->
+  <div id="modal-shortcuts" class="modal-backdrop hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-keyboard"></i> <span data-i18n="shortcutsTitle">Skróty Klawiszowe</span></h3>
+        <button class="modal-close" data-close="modal-shortcuts">&times;</button>
+      </div>
+      <div class="modal-body">
+        <ul class="shortcuts-list">
+          <li><kbd>Spacja</kbd> / <kbd>Enter</kbd> <span data-i18n="shortcutSpin">– Uruchom losowanie w wybranym trybie</span></li>
+          <li><kbd>Esc</kbd> <span data-i18n="shortcutClose">– Zamknij okno dialogowe / wygranej</span></li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button class="primary-btn" data-close="modal-shortcuts" data-i18n="btnClose">Zamknij</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Skrypty JS -->
+  <script src="js/sound.js"></script>
+  <script src="js/confetti.js"></script>
+  <script src="js/wheel.js"></script>
+  <script src="js/bottle.js"></script>
+  <script src="js/lottery.js"></script>
+  <script src="js/coin.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

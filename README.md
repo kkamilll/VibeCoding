@@ -15,6 +15,7 @@ Welcome to **VibeCoding** – a collection of creative, interactive, and beautif
 | Project | Description | Key Features | Folder | Live Demo |
 | :--- | :--- | :--- | :---: | :---: |
 | **🎮 GameHub** | 8 Arcade & Strategy Games (Local 2P / vs CPU) | Glassmorphism UI, 100% Web Audio sound synthesis, particle effects, minimax AI | [`/games`](./games) | [Play Online](https://mygamesproject.netlify.app/) |
+| **🎡 Lottery Hub** | Interactive Decision & Draw Platform (4 Modes) | Wheel of Fortune, Spin the Bottle, Lottery Machine, 3D Coin Flip, Audio & Voice synthesis | [`/lottery`](./lottery) | — |
 | **🎣 Catch My CV** | Interactive Fishing Portfolio | Nighttime fishing mini-game, procedural audio, scroll parchment CV | [`/fishing_cv`](./fishing_cv) | — |
 | **💖 Date Invitation** | Interactive Date Planner & Invitation | Evasive "NO" button, confetti, dynamic date plan generator with WhatsApp/SMS export | [`/date_invitation`](./date_invitation) | — |
 
@@ -27,12 +28,17 @@ An interactive gaming hub featuring 8 classic arcade and strategy games designed
 - **Included Games:** Tic-Tac-Toe, Pong, Connect 4, 2-Player Snake Battle, Battleship, Checkers, Air Hockey, Memo.
 - **Highlights:** Retro Web Audio API synthesizer (no external audio files), particle trails, dark neon glassmorphism UI, interactive rule modals, and achievements.
 
-### 2. 🎣 Catch My CV (`/fishing_cv`)
+### 2. 🎡 Lottery Hub (`/lottery`)
+An interactive decision-making and draw platform featuring 4 visual draw modes.
+- **Draw Modes:** Wheel of Fortune, Spin the Bottle, Lottery Machine (bouncing balls physics), and 3D Coin Flip.
+- **Highlights:** Web Audio API sound synthesis, Speech Synthesis voice narrator, custom color themes, JSON list export/import, stats tracking, and multi-language support (EN/PL).
+
+### 3. 🎣 Catch My CV (`/fishing_cv`)
 A creative interactive web portfolio designed as a calm nighttime fishing pond.
 - **Mechanics:** Cast your fishing rod into the water, wait for bites, catch funny ocean loot, and reel in a parchment CV.
 - **Highlights:** Pure Web Audio API water/reel sound synthesis, SVG night scenery, animated float physics, and customizable resume content.
 
-### 3. 💖 Date Invitation (`/date_invitation`)
+### 4. 💖 Date Invitation (`/date_invitation`)
 A playful and charming single-page web app for asking someone out on a date.
 - **Mechanics:** Playfully dodges the "NO" button when hovered, lets the user customize activity, day, and time, and generates a formatted message.
 - **Highlights:** Cute responsive design, Google Fonts typography, Canvas confetti explosion, and one-click SMS/WhatsApp sharing.
@@ -59,6 +65,7 @@ A playful and charming single-page web app for asking someone out on a date.
 2. **Run a Project Directly:**
    Most projects in this repository are standalone Single Page Applications. You can open any `index.html` file directly in your web browser without build steps:
    - `games/index.html`
+   - `lottery/index.html`
    - `fishing_cv/index.html`
    - `date_invitation/index.html`
 
@@ -80,6 +87,9 @@ Run this command in your terminal (no git history downloaded, just clean code fi
 ```bash
 # Download only the 'games' project
 npx degit kkamilll/VibeCoding/games my-games-project
+
+# Download only 'lottery'
+npx degit kkamilll/VibeCoding/lottery my-lottery-project
 
 # Download only 'fishing_cv'
 npx degit kkamilll/VibeCoding/fishing_cv my-fishing-cv
