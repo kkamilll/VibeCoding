@@ -71,6 +71,36 @@ A playful and charming single-page web app for asking someone out on a date.
 
 ---
 
+## 📦 How to Download Only a Single Project
+
+If someone is only interested in one specific project (e.g. `games`), there are several easy ways to download just that single folder:
+
+### Option 1: Using `degit` (Fastest & Easiest via Terminal ⚡)
+Run this command in your terminal (no git history downloaded, just clean code files):
+```bash
+# Download only the 'games' project
+npx degit kkamilll/VibeCoding/games my-games-project
+
+# Download only 'fishing_cv'
+npx degit kkamilll/VibeCoding/fishing_cv my-fishing-cv
+
+# Download only 'date_invitation'
+npx degit kkamilll/VibeCoding/date_invitation my-date-invitation
+```
+
+### Option 2: Using Git `sparse-checkout`
+Git supports downloading specific subfolders without downloading the entire repository history:
+```bash
+git clone --depth 1 --filter=blob:none --sparse https://github.com/kkamilll/VibeCoding.git
+cd VibeCoding
+git sparse-checkout set games
+```
+
+### Option 3: Download ZIP via Web Browser
+You can download the entire repository as a `.zip` file by clicking **Code ➔ Download ZIP** on GitHub, extract it, and open only the folder you need.
+
+---
+
 ## 📄 License
 
 This repository is maintained by [@kkamilll](https://github.com/kkamilll). Feel free to explore, clone, and build upon these projects!
