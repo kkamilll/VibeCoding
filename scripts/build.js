@@ -91,12 +91,36 @@ try {
     console.log('✅ _redirects copied to dist/_redirects');
   }
 
-  // Copy netlify.toml if exists
-  const netlifyToml = path.join(ROOT_DIR, 'netlify.toml');
-  if (fs.existsSync(netlifyToml)) {
-    fs.copyFileSync(netlifyToml, path.join(DIST_DIR, 'netlify.toml'));
-    console.log('✅ netlify.toml copied to dist/netlify.toml');
-  }
+  // 5. Generate clean netlify.toml for dist (Drag & Drop friendly without build triggers)
+  const distNetlifyToml = `[[redirects]]
+  from = "/games/*"
+  to = "/games/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/lottery/*"
+  to = "/lottery/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/fishing_cv/*"
+  to = "/fishing_cv/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/date_invitation/*"
+  to = "/date_invitation/:splat"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+`;
+  fs.writeFileSync(path.join(DIST_DIR, 'netlify.toml'), distNetlifyToml, 'utf8');
+  console.log('✅ Clean netlify.toml generated in dist/ for Drag & Drop');
 
   console.log('\n🎉 Build completed successfully! All projects are ready in dist/ for Netlify deployment.');
 } catch (error) {
