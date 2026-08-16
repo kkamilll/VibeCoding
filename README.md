@@ -54,6 +54,25 @@ A playful and charming single-page web app for asking someone out on a date.
 
 ---
 
+## 🌐 Netlify Deployment
+
+All projects in this repository are **100% pre-configured for Netlify deployment**.
+
+You can deploy the entire repository as a **single unified Hub** (`VibeCoding Hub` featuring `/games/`, `/lottery/`, `/fishing_cv/`, `/date_invitation/`), or deploy any subproject individually.
+
+### Quick Build & Deploy Command:
+```bash
+# Build all projects into a unified dist/ folder
+npm run build
+
+# Deploy via Netlify CLI (optional)
+npx netlify deploy --prod --dir=dist
+```
+
+For complete step-by-step instructions (GitHub CI/CD, Netlify CLI, Drag & Drop), read the [**NETLIFY_DEPLOYMENT_GUIDE.md**](./NETLIFY_DEPLOYMENT_GUIDE.md).
+
+---
+
 ## 🚀 How to Run Locally
 
 1. **Clone the Repository:**

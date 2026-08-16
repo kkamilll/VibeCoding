@@ -1,0 +1,23 @@
+{
+  "name": "vibecoding-hub",
+  "version": "1.0.0",
+  "description": "VibeCoding – Creative Web Apps & Interactive Projects Hub for Netlify",
+  "main": "index.html",
+  "scripts": {
+    "dev": "node scripts/dev.js",
+    "start": "node scripts/dev.js",
+    "build": "node scripts/build.js",
+    "build:games": "npm --prefix games run build",
+    "dev:games": "npm --prefix games run dev"
+  },
+  "keywords": [
+    "vibecoding",
+    "netlify",
+    "games",
+    "lottery",
+    "portfolio",
+    "interactive"
+  ],
+  "author": "kkamilll",
+  "license": "MIT"
+}

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VibeCoding Hub 🚀</title>
+  <meta name="description" content="Minimalist, fast, interactive web apps portal. Click and play.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@500;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
+
+  <style>
+    :root {
+      --bg-dark: #070814;
+      --bg-card: rgba(255, 255, 255, 0.03);
+      --bg-card-hover: rgba(255, 255, 255, 0.08);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --radius-xl: 28px;
+      --transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+      position: relative;
+      padding: 30px 20px;
+    }
+
+    /* Cyber Particle Canvas */
+    #cyber-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Ambient Glowing Orbs */
+    .orb-container {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(140px);
+      opacity: 0.35;
+      animation: float 20s infinite alternate ease-in-out;
+    }
+
+    .orb-1 {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, #7c3aed 0%, rgba(124, 58, 237, 0) 70%);
+      top: -100px;
+      left: -100px;
+    }
+
+    .orb-2 {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, #06b6d4 0%, rgba(6, 182, 212, 0) 70%);
+      bottom: -100px;
+      right: -100px;
+      animation-delay: -5s;
+    }
+
+    @keyframes float {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(60px, 40px) scale(1.1); }
+    }
+
+    /* Main Container */
+    .hub-wrap {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 1000px;
+      text-align: center;
+    }
+
+    /* Header */
+    header {
+      margin-bottom: 40px;
+    }
+
+    .brand-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 900;
+      letter-spacing: -1px;
+      background: linear-gradient(135deg, #ffffff 0%, #c4b5fd 50%, #38bdf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+
+    .brand-tagline {
+      font-size: 1rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Grid of Tiles */
+    .tiles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    /* Tile Card */
+    .tile-card {
+      position: relative;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 36px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      color: var(--text-main);
+      backdrop-filter: blur(20px);
+      transition: var(--transition);
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .tile-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius-xl);
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), transparent);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .tile-card:hover {
+      transform: translateY(-10px) scale(1.03);
+      background: var(--bg-card-hover);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Individual Tile Accent Glows */
+    .tile-games:hover {
+      border-color: rgba(139, 92, 246, 0.6);
+      box-shadow: 0 20px 40px rgba(124, 58, 237, 0.25);
+    }
+    .tile-lottery:hover {
+      border-color: rgba(6, 182, 212, 0.6);
+      box-shadow: 0 20px 40px rgba(6, 182, 212, 0.25);
+    }
+    .tile-fishing:hover {
+      border-color: rgba(16, 185, 129, 0.6);
+      box-shadow: 0 20px 40px rgba(16, 185, 129, 0.25);
+    }
+    .tile-date:hover {
+      border-color: rgba(236, 72, 153, 0.6);
+      box-shadow: 0 20px 40px rgba(236, 72, 153, 0.25);
+    }
+
+    /* Icon Box */
+    .icon-box {
+      width: 84px;
+      height: 84px;
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      transition: var(--transition);
+    }
+
+    .tile-card:hover .icon-box {
+      transform: scale(1.15) rotate(-6deg);
+    }
+
+    .tile-games .icon-box { color: #c4b5fd; background: rgba(139, 92, 246, 0.2); }
+    .tile-lottery .icon-box { color: #38bdf8; background: rgba(6, 182, 212, 0.2); }
+    .tile-fishing .icon-box { color: #34d399; background: rgba(16, 185, 129, 0.2); }
+    .tile-date .icon-box { color: #f472b6; background: rgba(236, 72, 153, 0.2); }
+
+    .tile-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .tile-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-muted);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .tile-card:hover .tile-badge {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    /* Footer */
+    footer {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 600px) {
+      .tiles-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+      .tile-card { padding: 24px 16px; }
+      .icon-box { width: 64px; height: 64px; font-size: 2rem; }
+      .tile-title { font-size: 1.15rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cyber Background Canvas -->
+  <canvas id="cyber-canvas"></canvas>
+
+  <!-- Ambient Orbs -->
+  <div class="orb-container">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+  </div>
+
+  <div class="hub-wrap">
+    <header>
+      <h1 class="brand-title">VibeCoding Hub</h1>
+      <p class="brand-tagline">Wybierz aplikację i kliknij, aby uruchomić 🚀</p>
+    </header>
+
+    <main class="tiles-grid">
+      
+      <!-- 1. GameHub -->
+      <a href="./games/" class="tile-card tile-games">
+        <div class="icon-box">
+          <i class="fa-solid fa-gamepad"></i>
+        </div>
+        <h2 class="tile-title">GameHub</h2>
+        <span class="tile-badge">8 Gier 🎮</span>
+      </a>
+
+      <!-- 2. Lottery Hub -->
+      <a href="./lottery/" class="tile-card tile-lottery">
+        <div class="icon-box">
+          <i class="fa-solid fa-dharmachakra"></i>
+        </div>
+        <h2 class="tile-title">Lottery Hub</h2>
+        <span class="tile-badge">4 Tryby 🎡</span>
+      </a>
+
+      <!-- 3. Catch My CV -->
+      <a href="./fishing_cv/" class="tile-card tile-fishing">
+        <div class="icon-box">
+          <i class="fa-solid fa-fish"></i>
+        </div>
+        <h2 class="tile-title">Catch My CV</h2>
+        <span class="tile-badge">Portfolio 🎣</span>
+      </a>
+
+      <!-- 4. Date Invitation -->
+      <a href="./date_invitation/" class="tile-card tile-date">
+        <div class="icon-box">
+          <i class="fa-solid fa-heart"></i>
+        </div>
+        <h2 class="tile-title">Date Invite</h2>
+        <span class="tile-badge">Randka 💖</span>
+      </a>
+
+    </main>
+
+    <footer>
+      <p>VibeCoding • Netlify Production Ready</p>
+    </footer>
+  </div>
+
+  <script>
+    // Audio feedback synth on hover & click
+    let audioCtx = null;
+    function playTone(freq, duration) {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {}
+    }
+
+    document.querySelectorAll('.tile-card').forEach(card => {
+      card.addEventListener('mouseenter', () => playTone(587.33, 0.08));
+      card.addEventListener('click', () => playTone(880, 0.15));
+    });
+
+    // Minimal Canvas Background
+    const canvas = document.getElementById('cyber-canvas');
+    const ctx = canvas.getContext('2d');
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
+
+    const particles = Array.from({ length: 40 }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: (Math.random() - 0.5) * 0.5,
+      vy: (Math.random() - 0.5) * 0.5,
+      r: Math.random() * 2 + 1
+    }));
+
+    function draw() {
+      ctx.clearRect(0, 0, width, height);
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0 || p.x > width) p.vx *= -1;
+        if (p.y < 0 || p.y > height) p.vy *= -1;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(167, 139, 250, 0.3)';
+        ctx.fill();
+      });
+      requestAnimationFrame(draw);
+    }
+    draw();
+  </script>
+</body>
+</html>

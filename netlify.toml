@@ -1,0 +1,30 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[[redirects]]
+  from = "/games/*"
+  to = "/games/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/lottery/*"
+  to = "/lottery/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/fishing_cv/*"
+  to = "/fishing_cv/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/date_invitation/*"
+  to = "/date_invitation/:splat"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"

@@ -1,0 +1,4 @@
+/games/*           /games/:splat           200
+/lottery/*         /lottery/:splat         200
+/fishing_cv/*       /fishing_cv/:splat       200
+/date_invitation/*  /date_invitation/:splat  200
