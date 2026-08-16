@@ -5,19 +5,23 @@
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
 ![Web Audio API](https://img.shields.io/badge/Web_Audio_API-000000?style=for-the-badge&logo=soundwave&logoColor=white)
+![Netlify](https://img.shields.io/badge/Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)
 
-Welcome to **VibeCoding** – a collection of creative, interactive, and beautifully designed web applications. This repository showcases projects ranging from arcade retro games with synthesized sound to interactive portfolios and playful micro-apps.
+Welcome to **VibeCoding** – a collection of creative, interactive, and beautifully designed web applications. This repository showcases projects ranging from arcade retro games with synthesized sound to interactive decision platforms, portfolios, and playful micro-apps.
+
+👉 **Live Portal Demo:** [**myvibecodingproject.netlify.app**](https://myvibecodingproject.netlify.app/)
 
 ---
 
-## 🌟 Featured Projects
+## 🌟 Featured Projects & Live Demos
 
 | Project | Description | Key Features | Folder | Live Demo |
 | :--- | :--- | :--- | :---: | :---: |
-| **🎮 GameHub** | 8 Arcade & Strategy Games (Local 2P / vs CPU) | Glassmorphism UI, 100% Web Audio sound synthesis, particle effects, minimax AI | [`/games`](./games) | [Play Online](https://mygamesproject.netlify.app/) |
-| **🎡 Lottery Hub** | Interactive Decision & Draw Platform (4 Modes) | Wheel of Fortune, Spin the Bottle, Lottery Machine, 3D Coin Flip, Audio & Voice synthesis | [`/lottery`](./lottery) | — |
-| **🎣 Catch My CV** | Interactive Fishing Portfolio | Nighttime fishing mini-game, procedural audio, scroll parchment CV | [`/fishing_cv`](./fishing_cv) | — |
-| **💖 Date Invitation** | Interactive Date Planner & Invitation | Evasive "NO" button, confetti, dynamic date plan generator with WhatsApp/SMS export | [`/date_invitation`](./date_invitation) | — |
+| **🚀 VibeCoding Hub** | Main Central Portal & Launcher | Ultra-clean Glassmorphism Dashboard, Cyber Particles, Audio Synth | [`/`](./) | [**Launch Hub 🚀**](https://myvibecodingproject.netlify.app/) |
+| **🎮 GameHub** | 8 Arcade & Strategy Games (Local 2P / vs CPU) | Glassmorphism UI, 100% Web Audio sound synthesis, particle effects, minimax AI | [`/games`](./games) | [**Play Online 🎮**](https://myvibecodingproject.netlify.app/games/) |
+| **🎡 Lottery Hub** | Interactive Decision & Draw Platform (4 Modes) | Wheel of Fortune, Spin the Bottle, Lottery Machine, 3D Coin Flip, Audio & Voice synthesis | [`/lottery`](./lottery) | [**Try Draws 🎡**](https://myvibecodingproject.netlify.app/lottery/) |
+| **🎣 Catch My CV** | Interactive Fishing Portfolio | Nighttime fishing mini-game, procedural audio, scroll parchment CV | [`/fishing_cv`](./fishing_cv) | [**Catch CV 🎣**](https://myvibecodingproject.netlify.app/fishing_cv/) |
+| **💖 Date Invitation** | Interactive Date Planner & Invitation | Evasive "NO" button, confetti, dynamic date plan generator with WhatsApp/SMS export | [`/date_invitation`](./date_invitation) | [**View Invite 💖**](https://myvibecodingproject.netlify.app/date_invitation/) |
 
 ---
 
@@ -50,7 +54,7 @@ A playful and charming single-page web app for asking someone out on a date.
 - **Frontend Core:** HTML5, Modern CSS3 (Variables, Flexbox, CSS Grid, Glassmorphism, Animations), Vanilla JavaScript (ES6+)
 - **Audio:** Web Audio API (100% pure real-time sound synthesis without external MP3/WAV assets)
 - **Graphics & UI:** Dynamic Canvas API, SVG Vectors, Google Fonts, FontAwesome
-- **Build Tools:** Vite (optional dev server & bundle optimization)
+- **Build Tools:** Vite (Vite dev server & bundle optimization)
 
 ---
 
@@ -60,8 +64,11 @@ All projects in this repository are **100% pre-configured for Netlify deployment
 
 You can deploy the entire repository as a **single unified Hub** (`VibeCoding Hub` featuring `/games/`, `/lottery/`, `/fishing_cv/`, `/date_invitation/`), or deploy any subproject individually.
 
-### Quick Build & Deploy Command:
+### Quick Build & Deploy Commands:
 ```bash
+# Run local development server (serves all apps at http://localhost:3000)
+npm run dev
+
 # Build all projects into a unified dist/ folder
 npm run build
 
@@ -81,19 +88,18 @@ For complete step-by-step instructions (GitHub CI/CD, Netlify CLI, Drag & Drop),
    cd VibeCoding
    ```
 
-2. **Run a Project Directly:**
-   Most projects in this repository are standalone Single Page Applications. You can open any `index.html` file directly in your web browser without build steps:
+2. **Start the Local Dev Server:**
+   ```bash
+   npm run dev
+   ```
+   This will start a local server at `http://localhost:3000` and automatically open the VibeCoding Hub in your browser.
+
+3. **Run a Project Directly (Standalone):**
+   Most projects in this repository are standalone Single Page Applications. You can open any `index.html` file directly in your web browser:
    - `games/index.html`
    - `lottery/index.html`
    - `fishing_cv/index.html`
    - `date_invitation/index.html`
-
-3. **Run GameHub with Vite Dev Server (Optional):**
-   ```bash
-   cd games
-   npm install
-   npm run dev
-   ```
 
 ---
 
